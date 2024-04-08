@@ -1,0 +1,31 @@
+class Solution {
+    public int countStudents(int[] students, int[] sandwiches) {
+        int n = students.length;
+        
+        int res = n;
+
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++){
+            map.put(students[i],map.getOrDefault(students[i],0) + 1);
+        }
+
+        for (int i = 0; i < n; i++){
+            if (map.getOrDefault(sandwiches[i],0) > 0){
+                int x = map.get(sandwiches[i]);
+                if (x - 1 == 0){
+                    map.remove(sandwiches[i]);
+                }
+                map.put(sandwiches[i],x - 1);
+
+                res--;
+            }
+            else{
+                return res;
+            }
+        }
+
+        return res;
+
+        
+    }
+}
