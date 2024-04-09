@@ -1,0 +1,26 @@
+class Solution {
+    public int timeRequiredToBuy(int[] tickets, int k) {
+        Queue<Integer> q = new LinkedList<>();
+
+        for (int i = 0; i < tickets.length; i++){
+            q.offer(i);
+        }
+
+        int ans = 0;
+        while (!q.isEmpty()){
+            ans++;
+
+            int curr = q.poll();
+
+            tickets[curr]--;
+            if (tickets[curr] != 0){
+                q.offer(curr);
+            }
+
+            if (curr == k && tickets[curr] == 0){
+                return ans;
+            }
+        }
+        return ans;
+    }
+}
