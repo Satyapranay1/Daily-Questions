@@ -1,0 +1,21 @@
+class Solution {
+    public int trap(int[] nums) {
+        int n = nums.length;
+        int left = 0,right = n - 1;
+        int ans = 0;
+        int leftMax = 0,rightMax = 0;
+        while (left <= right){
+            if (nums[left] <= nums[right]){
+                leftMax = Math.max(leftMax,nums[left]);
+                ans += leftMax - nums[left];
+                left++;
+            }
+            else{
+                rightMax = Math.max(nums[right],rightMax);
+                ans += rightMax - nums[right];
+                right--;
+            }
+        }
+        return ans;
+    }
+}
