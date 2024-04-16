@@ -1,0 +1,65 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode addOneRow(TreeNode root, int val, int depth) {
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        if (depth == 1){
+            TreeNode temp = new TreeNode(val);
+            temp.left = root;
+            return temp;
+        }
+        int d = 2;
+        while (!q.isEmpty()){
+            int size = q.size();
+            for (int i = 0; i < size; i++){
+                TreeNode curr = q.poll();
+
+                if (d == depth){
+                    if (curr.left != null){
+                        TreeNode temp = new TreeNode(val);
+                        temp.left = curr.left;
+                        curr.left = temp;
+                    }
+                    if (curr.left == null){
+                        TreeNode temp = new TreeNode(val);
+                        curr.left = temp;
+                    }
+
+                    if (curr.right != null){
+                        TreeNode temp = new TreeNode(val);
+                        temp.right = curr.right;
+                        curr.right = temp;
+                    }
+                    if (curr.right == null){
+                        TreeNode temp = new TreeNode(val);
+                        curr.right = temp;
+                    }
+                }
+                else{
+                    if (curr.left != null){
+                        q.offer(curr.left);
+                    }
+                    if (curr.right != null){
+                        q.offer(curr.right);
+                    }
+                }
+            }
+            d++;
+        }
+        return root;
+    }
+}
