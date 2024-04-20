@@ -1,0 +1,47 @@
+class Solution {
+    int row2 = 0,col2 = 0;
+    public int[][] findFarmland(int[][] land) {
+        int m = land.length;
+        int n = land[0].length;
+
+        boolean[][] vis = new boolean[m][n];
+
+        List<int[]> ans = new ArrayList<>();
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (!vis[i][j] && land[i][j] == 1){
+                    row2 = 0;
+                    col2 = 0;
+
+                    dfs(land,vis,i,j);
+
+                    int[] arr = new int[]{i,j,row2,col2};
+
+                    ans.add(arr);
+                }
+            }
+        }
+
+        int[][] res = new int[ans.size()][4];
+        for (int i = 0; i < ans.size(); i++){
+            for (int j = 0; j < 4; j++){
+                res[i][j] = ans.get(i)[j];
+            }
+        }
+        return res;
+    }
+
+    public void dfs(int[][] land,boolean[][] vis,int i,int j){
+        if (i >= land.length || i < 0 || j >= land[0].length || j < 0 || vis[i][j] || land[i][j] == 0){
+            return;
+        }
+
+        row2 = Math.max(row2,i);
+        col2 = Math.max(col2,j);
+
+        vis[i][j] = true;
+
+        dfs(land,vis,i + 1,j);
+        dfs(land,vis,i,j + 1);
+    }
+}
