@@ -1,0 +1,13 @@
+class Solution:
+    def longestIdealString(self, s: str, k: int) -> int:
+        dp = [0] * 26
+        res = 0
+
+        for i in s:
+            curr = ord(i) - ord('a')
+            long = 1
+            for prev in range(26):
+                if abs(curr - prev) <= k:
+                    long = max(long,1 + dp[prev])
+            dp[curr] = max(dp[curr],long)
+        return max(dp)
