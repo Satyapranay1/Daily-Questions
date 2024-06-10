@@ -1,0 +1,59 @@
+class Solution {
+    public int heightChecker(int[] heights) {
+        int n = heights.length;
+        int[] org = Arrays.copyOf(heights,n);
+        sort(heights,0,n - 1);
+        int count = 0;
+        for (int i = 0; i < n; i++){
+            if (org[i] != heights[i]){
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public void merge(int[] arr,int low,int mid,int high){
+        int r1 = mid - low + 1;
+        int r2 = high - mid;
+
+        int[] c1 = new int[r1];
+        int[] c2 = new int[r2];
+
+        for (int i = 0; i < r1; i++){
+            c1[i] = arr[low + i];
+        }
+
+        for (int i = 0; i < r2; i++){
+            c2[i] = arr[mid + i + 1];
+        }
+
+        int i = 0,j = 0,k = low;
+        while (i < r1 && j < r2){
+            if (c1[i] <= c2[j]){
+                arr[k++] = c1[i++];
+            }
+            else{
+                arr[k++] = c2[j++];
+            }
+        }
+
+        while (i < r1){
+            arr[k++] = c1[i++];
+        }
+
+        while (j < r2){
+            arr[k++] = c2[j++];
+        }
+    }
+
+    public void sort(int[] arr,int left,int right){
+        if (left < right){
+            int mid = (left + right) / 2;
+            sort(arr,left,mid);
+            sort(arr,mid + 1,right);
+
+            merge(arr,left,mid,right);
+        }
+    }
+}
