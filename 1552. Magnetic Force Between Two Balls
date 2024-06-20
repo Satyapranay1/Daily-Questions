@@ -1,0 +1,34 @@
+class Solution {
+    public int maxDistance(int[] position, int m) {
+        int n = position.length;
+        Arrays.sort(position);
+        int low = 1,high = position[n - 1] - position[0];
+        int ans = 0;
+        while (low <= high){
+            int mid = (low + high) / 2;
+            if (isSafe(position,m,mid)){
+                low = mid + 1;
+                ans = mid;
+            }
+            else{
+                high = mid - 1;
+            }
+        }
+        return ans;
+    }
+
+    public boolean isSafe(int[] nums,int m,int mid){
+        int start = nums[0],count = 1;
+        for (int i = 1; i < nums.length; i++){
+            if (nums[i] - start >= mid){
+                count++;
+                start = nums[i];
+            }
+
+            if (count == m){
+                return true;
+            }
+        }
+        return false;
+    }
+}
