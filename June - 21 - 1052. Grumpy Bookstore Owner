@@ -1,0 +1,23 @@
+class Solution {
+    public int maxSatisfied(int[] customers, int[] grumpy, int minutes) {
+        int n = customers.length;
+        int ok = 0;
+        for (int i = 0; i < minutes; i++){
+            ok += (customers[i] * grumpy[i]);
+        }
+
+        int max = ok;
+        for (int i = minutes; i < n; i++){
+            ok -= (customers[i - minutes] * grumpy[i - minutes]);
+            ok += (customers[i] * grumpy[i]);
+            max = Math.max(max,ok);
+        }
+
+        int ans = max;
+        for (int i = 0; i < n; i++){
+            ans += (customers[i] * (1 - grumpy[i]));
+        }
+
+        return ans;
+    }
+}
