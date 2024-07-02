@@ -1,0 +1,20 @@
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        int[] arr = new int[1001];
+        int[] res = new int[1001];
+
+        for (int el : nums1){
+            arr[el]++;
+        }
+
+        int ans = 0;
+        for (int el :nums2){
+            if (arr[el] > 0){
+                res[ans++] = el;
+                arr[el]--;
+            }
+        }
+
+        return Arrays.copyOfRange(res,0,ans);
+    }
+}
