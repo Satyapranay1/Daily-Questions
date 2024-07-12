@@ -1,0 +1,34 @@
+class Solution {
+    public int maximumGain(String s, int x, int y) {
+        String high = (x > y) ? "ab" : "ba";
+        String low = (x <= y) ? "ab" : "ba";
+        int ans = 0;
+        String first = remove(s,high);
+        ans += (s.length() - first.length()) / 2 * Math.max(x,y);
+        String second = remove(first,low);
+        ans += (first.length() - second.length()) / 2 * Math.min(x,y);
+        return ans;
+    }
+
+    public String remove(String s,String curr){
+        Stack<Character> st = new Stack<>();
+        for (int i = 0; i < s.length(); i++){
+            char x = s.charAt(i);
+
+            if (!st.isEmpty() && st.peek() == curr.charAt(0) && curr.charAt(1) == s.charAt(i)){
+                st.pop();
+            }
+
+            else{
+                st.push(s.charAt(i));
+            }
+        }
+
+        StringBuilder temp = new StringBuilder();
+        while (!st.isEmpty()){
+            temp.append(st.pop());
+        }
+        
+        return temp.reverse().toString();
+    }
+}
