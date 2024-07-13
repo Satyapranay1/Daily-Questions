@@ -1,0 +1,50 @@
+class Solution {
+    public List<Integer> survivedRobotsHealths(int[] positions, int[] healths, String directions) {
+        int n = positions.length;
+        List<Integer> ans = new ArrayList<>();
+        Integer[] index = new Integer[n];
+        Stack<Integer> st = new Stack<>();
+        for (int i = 0; i < n; i++){
+            index[i] = i;
+        }
+
+        Arrays.sort(index,(a,b) -> Integer.compare(positions[a],positions[b]));
+        for (int ind : index){
+            char x = directions.charAt(ind);
+            if (x == 'R'){
+                st.push(ind);
+            }
+
+            else{
+                while (!st.isEmpty() && healths[ind] > 0){
+                    int pos = st.pop();
+
+                    //If left > right
+                    if (healths[pos] > healths[ind]){
+                        healths[pos]--;
+                        healths[ind] = 0;
+                        //If robot survives then we have to add
+                        st.push(pos);
+                    }
+
+                    else if (healths[pos] < healths[ind]){
+                        healths[ind]--;
+                        healths[pos] = 0;
+                    }
+
+                    else{
+                        healths[ind] = 0;
+                        healths[pos] = 0;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < n; i++){
+            if (healths[i] > 0){
+                ans.add(healths[i]);
+            }
+        }
+        return ans;
+    }
+}
