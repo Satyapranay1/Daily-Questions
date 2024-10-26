@@ -1,0 +1,53 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int[] Height = new int[100001];
+    int currMax = 0;
+    public int[] treeQueries(TreeNode root, int[] queries) {
+        TraverseLeft(root,0);
+        currMax = 0;
+        TraverseRight(root,0);
+
+        int n = queries.length;
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++){
+            ans[i] = Height[queries[i]];
+        }
+        return ans;
+    }
+
+    public void TraverseLeft(TreeNode root,int curr){
+        if (root == null){
+            return;
+        }
+
+        Height[root.val] = currMax;
+        currMax = Math.max(currMax,curr);
+        TraverseLeft(root.left,curr + 1);
+        TraverseLeft(root.right,curr + 1);
+    }
+
+    public void TraverseRight(TreeNode root,int curr){
+        if (root == null){
+            return;
+        }
+
+        Height[root.val] = Math.max(Height[root.val],currMax);
+        currMax = Math.max(currMax,curr);
+        TraverseRight(root.right,curr + 1);
+        TraverseRight(root.left,curr + 1);
+    }
+}
