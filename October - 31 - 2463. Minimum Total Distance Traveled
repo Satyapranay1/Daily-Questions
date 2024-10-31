@@ -1,0 +1,40 @@
+class Solution {
+    public long minimumTotalDistance(List<Integer> robot, int[][] factory) {
+        Collections.sort(robot);
+        Arrays.sort(factory,Comparator.comparingInt(a -> a[0]));
+
+        List<Integer> fact = new ArrayList<>();
+        for (int i = 0; i < factory.length; i++){
+            int x = factory[i][1];
+            for (int j = 0; j < x; j++){
+                fact.add(factory[i][0]);
+            }
+        }
+
+        System.out.println(fact);
+
+        long[][] memo = new long[robot.size()][fact.size()];
+        for (long[] in : memo){
+            Arrays.fill(in,-1);
+        }
+        return Dp(robot,fact,0,0,memo);
+    }
+
+    public long Dp(List<Integer> robo,List<Integer> fact,int rid,int fid,long[][] memo){
+        if (rid == robo.size()){
+            return 0;
+        }
+
+        if (fid == fact.size()){
+            return (long)1e12;
+        }
+
+        if (memo[rid][fid] != -1){
+            return memo[rid][fid];
+        }
+
+        long take = Math.abs(fact.get(fid) - robo.get(rid)) + Dp(robo,fact,rid + 1,fid + 1,memo);
+        long NotTake = Dp(robo,fact,rid,fid + 1,memo);
+        return memo[rid][fid] = Math.min(take,NotTake);
+    }
+}
