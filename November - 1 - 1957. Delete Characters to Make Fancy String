@@ -4,7 +4,22 @@ class Solution {
         if (n < 2){
             return s;
         }
+        return Constant(s);
+    }
 
+    public String Constant(String s){
+        StringBuilder ans = new StringBuilder();
+        ans.append(s.charAt(0)).append(s.charAt(1));
+        for (int i = 2; i < s.length(); i++){
+            if ((s.charAt(i) == s.charAt(i - 1)) && (s.charAt(i - 1) == s.charAt(i - 2))){
+                continue;
+            }
+            ans.append(s.charAt(i));
+        }
+        return ans.toString();
+    }
+
+    public String Stack1(String s){
         Stack<Character> s1 = new Stack<>();
         for (int i = 0; i < s.length(); i++){
             if (i < 2){
