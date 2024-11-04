@@ -1,0 +1,34 @@
+class Solution {
+    public String compressedString(String word) {
+        StringBuilder ans = new StringBuilder();
+        int freq = 1,n = word.length();
+        if (n == 1){
+            return ans.append(1).append(word.charAt(0)).toString();
+        }
+        for (int i = 0; i < n - 1; i++){
+            if (word.charAt(i) == word.charAt(i + 1)){
+                if (freq >= 9){
+                    ans.append(freq).append(word.charAt(i));
+                    freq = 1;
+                }
+                else{
+                    freq++;
+                }
+            }
+            else{
+                ans.append(freq).append(word.charAt(i));
+                freq = 1;
+            }
+        }
+
+    
+        if (word.charAt(n - 1) == word.charAt(n - 2)){
+            ans.append(freq).append(word.charAt(n - 1));
+        }
+        else{
+            ans.append(1).append(word.charAt(n - 1));
+        }
+    
+        return ans.toString();
+    }
+}
