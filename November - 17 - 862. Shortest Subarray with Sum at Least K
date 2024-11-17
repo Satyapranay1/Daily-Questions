@@ -1,0 +1,27 @@
+class Solution {
+    public int shortestSubarray(int[] nums, int k) {
+        int n = nums.length;
+        int sho = Integer.MAX_VALUE;
+
+        long sum = 0;
+        PriorityQueue<Pair<Long,Integer>> heap = new PriorityQueue<>(
+            (a,b) -> Long.compare(a.getKey(),b.getKey())
+        );
+
+        for (int i = 0; i < n; i++){
+            sum += nums[i];
+            if (sum >= k){
+                sho = Math.min(sho,i + 1);
+            }
+
+            while (!heap.isEmpty() && sum - heap.peek().getKey() >= k){
+                sho = Math.min(sho,i - heap.poll().getValue());
+            }
+            heap.offer(new Pair<>(sum,i));
+        }
+
+        
+
+        return sho == Integer.MAX_VALUE ? -1 : sho;
+    }
+}
