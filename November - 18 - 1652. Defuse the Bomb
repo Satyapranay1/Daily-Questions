@@ -1,0 +1,38 @@
+class Solution {
+    public int[] decrypt(int[] code, int k) {
+        int[] ans = new int[code.length];
+        boolean c = k < 0 ? true : false;
+        if (k < 0){
+            int start = 0,end = code.length - 1;
+            while (start <= end){
+                int temp = code[start];
+                code[start] = code[end];
+                code[end] = temp;
+                start++;
+                end--;
+            }
+
+            k = -k;
+        }
+        for (int i = 0; i < ans.length; i++){
+            int curr = 0;
+            for (int j = i + 1; j <= i + k; j++){
+                curr += code[j % code.length];
+            }
+            ans[i] = curr;
+        }
+
+        if (c){
+            int start = 0,end = code.length - 1;
+            while (start <= end){
+                int temp = ans[start];
+                ans[start] = ans[end];
+                ans[end] = temp;
+                start++;
+                end--;
+            }
+
+        }
+        return ans;
+    }
+}
