@@ -1,0 +1,22 @@
+class Solution {
+    public long maximumSubarraySum(int[] nums, int k) {
+        long curr = 0,max = 0;
+        int left = 0,right = 0;
+        HashMap<Integer,Integer> map = new HashMap<>();
+        while (right < nums.length){
+            int curr1 = nums[right];
+            int last = map.getOrDefault(curr1,-1);
+            curr += nums[right];
+            while (left <= last || right - left + 1 > k){
+                curr -= nums[left++];
+            }
+
+            map.put(curr1,right);
+            if (right - left + 1 == k){
+                max = Math.max(max,curr);
+            }
+            right++;
+        }
+        return max;
+    }
+}
