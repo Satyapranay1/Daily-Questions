@@ -1,0 +1,22 @@
+class Solution {
+    public long maxMatrixSum(int[][] matrix) {
+        long ans = 0;
+        int min = Integer.MAX_VALUE;
+        int neg = 0;
+        for (int[] row : matrix){
+            for (int v : row){
+                if (v < 0){
+                    neg++;
+                    v = -v;
+                }
+                ans += v;
+                min = Math.min(min,v);
+            }
+        }
+
+        if (neg % 2 != 0){
+            ans -= (2 * min);
+        }
+        return ans;
+    }
+}
