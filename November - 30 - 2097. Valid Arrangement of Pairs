@@ -1,0 +1,44 @@
+class Solution {
+    public int[][] validArrangement(int[][] pairs) {
+        Map<Integer,Deque<Integer>> adj = new HashMap<>();
+        Map<Integer,Integer> out = new HashMap<>();
+        Map<Integer,Integer> in = new HashMap<>();
+
+        for (int[] p : pairs){
+            int start = p[0],end = p[1];
+            adj.computeIfAbsent(start,k -> new ArrayDeque<>()).offer(end);
+            out.put(start,out.getOrDefault(start,0) + 1);
+            in.put(end,in.getOrDefault(end,0) + 1);
+        }
+
+        int st = -1;
+        for (int i : out.keySet()){
+            if (out.get(i) == in.getOrDefault(i,0) + 1){
+                st = i;
+                break;
+            }
+        }
+
+        if (st == -1){
+            st = pairs[0][0];
+        }
+
+        List<Integer> res = new ArrayList<>();
+        Traverse(st,adj,res);
+        // Collections.reverse(res);
+        int[][] ans = new int[res.size() - 1][2];
+        for (int i = res.size() - 1; i >= 1; i--){
+            ans[pairs.length - i] = new int[]{res.get(i),res.get(i - 1)};
+        }
+        return ans;
+    }
+
+    public void Traverse(int node,Map<Integer,Deque<Integer>> adj,List<Integer> res){
+        Deque<Integer> neigh = adj.get(node);
+        while (neigh != null && !neigh.isEmpty()){
+            int next = neigh.pollFirst();
+            Traverse(next,adj,res);
+        }
+        res.add(node);
+    }
+}
