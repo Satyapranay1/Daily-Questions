@@ -1,34 +1,36 @@
 class Solution {
     public int maximumLength(String s) {
-        Map<Pair<Character, Integer>, Integer> count = new HashMap<>();
-        int substringLength = 0;
+        HashMap<String, Integer> map = new HashMap<>();
+        int ans = -1;
+        char prev = s.charAt(0);
+        int rep = 1;
 
-        for (int start = 0; start < s.length(); start++) {
-            char character = s.charAt(start);
-            substringLength = 0;
-
-            for (int end = start; end < s.length(); end++) {
-                if (character == s.charAt(end)) {
-                    substringLength++;
-                    Pair<Character, Integer> key = new Pair<>(
-                        character,
-                        substringLength
-                    );
-                    count.put(key, count.getOrDefault(key, 0) + 1);
-                } else {
-                    break;
-                }
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i) == s.charAt(i - 1)) {
+                rep++;
+            } else {
+                updateMap(map, prev, rep);
+                rep = 1;
+                prev = s.charAt(i);
             }
         }
 
-        int ans = 0;
-        for (Map.Entry<Pair<Character, Integer>,Integer> entry : count.entrySet()) {
-            int length = entry.getKey().getValue();
-            if (entry.getValue() >= 3 && length > ans) {
-                ans = length;
+        updateMap(map, prev, rep);
+
+        for (String key : map.keySet()) {
+            if (map.get(key) >= 3) {
+                ans = Math.max(ans, key.length());
             }
         }
+        return ans;
+    }
 
-        return ans == 0 ? -1 : ans;
+    private void updateMap(HashMap<String, Integer> map, char ch, int rep) {
+        StringBuilder sb = new StringBuilder();
+        for (int len = 1; len <= rep; len++) {
+            sb.append(ch);
+            String key = sb.toString();
+            map.put(key, rep - len + map.getOrDefault(key, 0) + 1);
+        }
     }
 }
