@@ -1,0 +1,20 @@
+class Solution {
+    public long pickGifts(int[] gifts, int k) {
+        long ans = 0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a,b) -> (b - a));
+        for (int i : gifts){
+            pq.offer(i);
+        }
+
+        while (k-- > 0){
+            int x = pq.poll();
+            pq.offer((int)Math.sqrt(x));
+        }
+
+        while (!pq.isEmpty()){
+            ans += pq.poll();
+        }
+        return ans;
+
+    }
+}
