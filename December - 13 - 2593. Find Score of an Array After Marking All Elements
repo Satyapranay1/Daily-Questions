@@ -1,0 +1,33 @@
+class Solution {
+    public long findScore(int[] nums) {
+        long ans = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> {
+            if (a[0] != b[0])  return a[0] - b[0];
+            return a[1] - b[1];
+        });
+        boolean[] vis = new boolean[nums.length];
+        for (int i = 0; i < nums.length; i++){
+            pq.offer(new int[]{nums[i],i});
+        }
+
+        while (!pq.isEmpty()){
+            int[] curr = pq.poll();
+            int el = curr[0],ind = curr[1];
+            if (!vis[ind]){
+                ans += el;
+                vis[ind] = true;
+            
+
+                if (ind - 1 >= 0){
+                    vis[ind - 1] = true;
+                }
+
+                if (ind + 1 < nums.length){
+                    vis[ind + 1] = true;
+                }
+            }
+        }
+
+        return ans;
+    }
+}
