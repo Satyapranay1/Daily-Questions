@@ -1,0 +1,28 @@
+class Solution {
+    public long continuousSubarrays(int[] nums) {
+        long ans = 0;
+        PriorityQueue<Integer> min = new PriorityQueue<>((a,b) -> (nums[a] - nums[b]));
+        PriorityQueue<Integer> max = new PriorityQueue<>((a,b) -> (nums[b] - nums[a]));
+        int left = 0,right = 0;
+        while (right < nums.length){
+            min.offer(right);
+            max.offer(right);
+
+            while (left < right && nums[max.peek()] - nums[min.peek()] > 2){
+                left++;
+
+                while (!max.isEmpty() && max.peek() < left){
+                    max.poll();
+                }
+
+                while (!min.isEmpty() && min.peek() < left){
+                    min.poll();
+                }
+            }
+
+            ans += (right - left + 1);
+            right++;
+        } 
+        return ans;
+    }
+}
