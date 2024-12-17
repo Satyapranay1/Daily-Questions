@@ -1,0 +1,35 @@
+class Solution {
+    public String repeatLimitedString(String s, int repeatLimit) {
+        PriorityQueue<Character> pq = new PriorityQueue<>((a,b) -> Character.compare(b,a));
+        HashMap<Character,Integer> map = new HashMap<>();
+        for (char c : s.toCharArray()){
+            map.put(c,map.getOrDefault(c,0) + 1);
+        }
+
+        for (char ch : map.keySet()){
+            pq.offer(ch);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        while (!pq.isEmpty()){
+            char ch = pq.poll();
+            int cnt = map.get(ch);
+            int use = Math.min(cnt,repeatLimit);
+            for (int i = 0; i < use; i++){
+                sb.append(ch);
+            }
+
+            map.put(ch,cnt - use);
+            if (map.get(ch) > 0 && !pq.isEmpty()){
+                char nex = pq.poll();
+                sb.append(nex);
+                map.put(nex,map.get(nex) - 1);
+                if (map.get(nex) > 0){
+                    pq.offer(nex);
+                }
+                pq.offer(ch);
+            }
+        }
+        return sb.toString();
+    }
+}
