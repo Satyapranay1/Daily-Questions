@@ -1,0 +1,29 @@
+class Solution {
+    public int[] finalPrices(int[] prices) {
+        return Opti(prices);
+    }
+
+    public int[] Opti(int[] prices){
+        Stack<Integer> st = new Stack<>();
+        for (int i = 0; i < prices.length; i++){
+            while (!st.isEmpty() && prices[st.peek()] >= prices[i]){
+                prices[st.peek()] -= prices[i];
+                st.pop();
+            }
+            st.push(i);
+        }
+        return prices;
+    }
+
+    public int[] Brute(int[] prices){
+        for (int i = 0; i < prices.length; i++){
+            for (int j = i + 1; j < prices.length; j++){
+                if (prices[i] >= prices[j]){
+                    prices[i] -= prices[j];
+                    break;
+                }
+            }
+        }
+        return prices;
+    }
+}
