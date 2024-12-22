@@ -1,0 +1,42 @@
+class Solution {
+    public int[] leftmostBuildingQueries(int[] heights, int[][] queries) {
+        List<List<List<Integer>>> store = new ArrayList<>();
+        for (int i = 0; i < heights.length; i++) {
+            store.add(new ArrayList<>());
+        }
+        PriorityQueue<List<Integer>> pq = new PriorityQueue<>((a,b) -> (a.get(0) - b.get(0)));
+        int[] ans = new int[queries.length];
+        int ind = 0;
+        Arrays.fill(ans,-1);
+        for (int[] q : queries){
+            int s = q[0],e = q[1];
+            if (s < e && heights[s] < heights[e]){
+                ans[ind++] = e;
+            }
+
+            else if (s > e && heights[s] > heights[e]){
+                ans[ind++] = s;
+            }
+
+            else if (s == e){
+                ans[ind++] = s;
+            }
+            
+            else{
+                store.get(Math.max(s,e)).add(Arrays.asList(Math.max(heights[s],heights[e]),ind++));
+            }
+        }
+
+        for (int i = 0; i < heights.length; i++){
+            while (!pq.isEmpty() && pq.peek().get(0) < heights[i]){
+                ans[pq.peek().get(1)] = i;
+                pq.poll();
+            }
+
+            for (List<Integer> el : store.get(i)){
+                pq.offer(el);
+            }
+        }
+        return ans;
+    }
+}
