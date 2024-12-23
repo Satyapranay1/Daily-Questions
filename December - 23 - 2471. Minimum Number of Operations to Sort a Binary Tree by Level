@@ -1,0 +1,62 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int Swaps(int[] level){
+        int ans = 0;
+        int[] target = level.clone();
+        Arrays.sort(target);
+
+        Map<Integer,Integer> map = new HashMap<>();
+        for (int i = 0; i < level.length; i++){
+            map.put(level[i],i);
+        }
+
+         for (int i = 0; i < level.length; i++) {
+            if (level[i] != target[i]) {
+                ans++;
+                int curPos = map.get(target[i]);
+                map.put(level[i], curPos);
+                level[curPos] = level[i];
+            }
+        }
+        return ans;
+
+    }
+    public int minimumOperations(TreeNode root) {
+        Queue<TreeNode> q = new LinkedList<>();
+        HashMap<Integer,Integer> map = new HashMap<>();
+        int ans = 0;
+        q.offer(root);
+        while (!q.isEmpty()){
+            int s = q.size();
+            int[] temp = new int[s];
+            int idx = 0;
+            for (int i = 0; i < s; i++){
+                TreeNode curr = q.poll();
+                temp[i] = curr.val;
+                if (curr.left != null){
+                    q.offer(curr.left);
+                }
+                if (curr.right != null){
+                    q.offer(curr.right);
+                }
+            }
+            ans += Swaps(temp);
+            System.out.println(Arrays.toString(temp));
+        }
+        return ans;
+    }
+}
