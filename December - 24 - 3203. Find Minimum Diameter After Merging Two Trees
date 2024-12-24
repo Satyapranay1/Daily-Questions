@@ -1,0 +1,67 @@
+class Solution {
+    class Pair{
+        int first,second;
+        Pair(int first,int second){
+            this.first = first;
+            this.second = second;
+        }
+
+        public int getFirst(){
+            return first;
+        }
+
+        public int getSecond(){
+            return second;
+        }
+    }
+    public int minimumDiameterAfterMerge(int[][] edges1, int[][] edges2) {
+        int m = edges1.length + 1,n = edges2.length + 1;
+        List<List<Integer>> adj1 = build(m,edges1);
+        List<List<Integer>> adj2 = build(n,edges2);
+
+        int dm1 = find(adj1,0,-1).getFirst();
+        int dm2 = find(adj2,0,-1).getFirst();
+        int cm = (int)(Math.ceil(dm1 / 2.0)) + (int)(Math.ceil(dm2 / 2.0)) + 1;
+        return Math.max(dm1,Math.max(dm2,cm));
+    }
+
+    public List<List<Integer>> build(int size,int[][] edges){
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < size; i++){
+            adj.add(new ArrayList<>());
+        }
+
+        for (int[] edge : edges){
+            adj.get(edge[0]).add(edge[1]);
+            adj.get(edge[1]).add(edge[0]);
+        }
+        return adj;
+    }
+
+    public Pair find(List<List<Integer>> adj,int curr,int parent){
+        int m1 = 0,m2 = 0;
+        int dm = 0;
+        for (int n : adj.get(curr)){
+            if (n == parent){
+                continue;
+            }
+
+            Pair res = find(adj,n,curr);
+            int child = res.getFirst();
+            int dep = res.getSecond() + 1;
+
+            dm = Math.max(dm,child);
+
+            if (dep > m1){
+                m2 = m1;
+                m1 = dep;
+            }
+            else if (dep > m2){
+                m2 = dep;
+            }
+        }
+
+        dm = Math.max(dm,m1 + m2);
+        return new Pair(dm,m1);
+    }
+}
