@@ -1,0 +1,29 @@
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+        int total = 0;
+        for (int i = 0; i < nums.length; i++){
+            total += nums[i];
+        }
+        int[][] dp = new int[2 * total + 2][nums.length + 1];
+        for (int[] i : dp){
+            Arrays.fill(i,-1);
+        }
+        return Rec(nums,target,0,0,dp,total);
+    }
+
+    public int Rec(int[] nums,int target,int curr,int idx,int[][] dp,int total){
+        if (idx == nums.length){
+            if (curr == target){
+                return 1;
+            }
+            return 0;
+        }
+
+        if (dp[curr + total][idx] != -1){
+            return dp[curr + total][idx];
+        }
+        int take = Rec(nums,target,curr + nums[idx],idx + 1,dp,total);
+        int not = Rec(nums,target,curr - nums[idx],idx + 1,dp,total);
+        return dp[curr + total][idx] = take + not;
+    }
+}
