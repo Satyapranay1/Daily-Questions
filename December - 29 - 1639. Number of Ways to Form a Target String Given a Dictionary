@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int numWays(vector<string>& words, string target) {
+        vector<vector<int>>dp(words[0].size(),vector<int>(target.size(),-1));
+        vector<vector<int>>freq(words[0].size(),vector<int>(26,0));
+
+        for (int i = 0; i < words.size(); i++){
+            for (int j = 0; j < words[0].size(); j++){
+                int ch = words[i][j] - 'a';
+                freq[j][ch]++;
+            }
+        }
+
+        return (int)Dp(words,target,dp,freq,0,0);
+    }
+
+    long Dp(vector<string>& words,string& target,vector<vector<int>>& dp,vector<vector<int>>& freq,int widx,int cidx){
+        //Base case
+        if (cidx == target.size()){
+            return 1;
+        }
+
+        if (widx == words[0].size() || words[0].size() - widx < target.size() - cidx){
+            return 0;
+        }
+
+        if (dp[widx][cidx] != -1){
+            return dp[widx][cidx];
+        }
+
+        //Take
+        long count = 0;
+        int curr = target[cidx] - 'a';
+        count += freq[widx][curr] * Dp(words,target,dp,freq,widx + 1,cidx + 1);
+        count += Dp(words,target,dp,freq,widx + 1,cidx);
+        return dp[widx][cidx] = count % 1000000007;
+    }
+};
