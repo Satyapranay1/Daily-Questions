@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        unordered_set<int>set(days.begin(),days.end());
+        vector<int>dp(days[days.size() - 1] + 1,-1);
+        return Rec(days,costs,0,set,dp);
+    }
+
+    int Rec(vector<int>& days,vector<int>& costs,int curr,unordered_set<int>& set,vector<int>& dp){
+        if (curr > days[days.size() - 1]){
+            return 0;
+        }
+
+        if (set.find(curr) == set.end()){
+            return Rec(days,costs,curr + 1,set,dp);
+        }
+
+        if (dp[curr] != -1){
+            return dp[curr];
+        }
+
+        int one = costs[0] + Rec(days,costs,curr + 1,set,dp);
+        int seven = costs[1] + Rec(days,costs,curr + 7,set,dp);
+        int thirty = costs[2] + Rec(days,costs,curr + 30,set,dp);
+        return dp[curr] = min(one,min(seven,thirty));
+    }
+};
