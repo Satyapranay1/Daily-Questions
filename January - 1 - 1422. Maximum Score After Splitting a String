@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxScore(string s) {
+        int one = 0;
+        int max1 = 0;
+        for (int i = 0; i < s.size(); i++){
+            if (s[i] == '1'){
+                one++;
+            }
+        }
+
+        int zeros = 0;
+        for (int i = 0; i < s.size() - 1; i++){
+            if (s[i] == '1'){
+                one--;
+            }
+            else{
+                zeros++;
+            }
+
+            max1 = max(max1,one + zeros);
+        }
+        return max1;
+    }
+};
