@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> vowelStrings(vector<string>& words, vector<vector<int>>& queries) {
+        vector<int>pref(words.size());
+        vector<int>ans(queries.size());
+        int sum = 0;
+        unordered_set<char> vowels{'a','e','i','o','u'};
+        for (int i = 0; i < words.size(); i++){
+            string word = words[i];
+            if (vowels.count(word[0]) && vowels.count(word[word.size() - 1])){
+                sum++;
+            }
+            pref[i] = sum;
+        }
+
+        // for (int i : pref){
+        //     cout << i << "";
+        // }
+        for (int i = 0; i < queries.size(); i++){
+            int left = queries[i][0];
+            int right = queries[i][1];
+            ans[i] = pref[right] - (left > 0 ? pref[left - 1] : 0);
+        }
+        return ans;
+    }
+};
