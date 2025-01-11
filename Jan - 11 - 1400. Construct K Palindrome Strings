@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool canConstruct(string s, int k) {
+        if (s.size() < k){
+            return false;
+        }
+
+        if (s.size() == k){
+            return true;
+        }
+
+        vector<int>odd(26,0);
+        for (auto& chr : s){
+            odd[chr - 'a']++;
+        }
+
+        int cnt = 0;
+        for (int i = 0; i < 26; i++){
+            if (odd[i] % 2 != 0){
+                cnt++;
+            }
+        }
+        return cnt <= k;
+    }
+};
