@@ -1,0 +1,26 @@
+class Solution {
+    public int[] findThePrefixCommonArray(int[] A, int[] B) {
+        int[] ans = new int[A.length];
+        for (int i = 0; i < A.length; i++){
+            ans[i] = intersection(A,B,i);
+        }
+        return ans;
+    }
+
+    public int intersection(int[] nums1, int[] nums2,int j) {
+        HashSet<Integer> res = new HashSet<>();
+        for (int i = 0; i <= j; i++){
+            res.add(nums1[i]);
+        }
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i <= j; i++){
+            int x =  nums2[i];
+            if (res.contains(x)){
+                ans.add(x);
+                res.remove(x);
+            }
+        }
+
+        return ans.size();
+    }
+}
