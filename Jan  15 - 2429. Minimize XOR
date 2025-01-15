@@ -1,0 +1,35 @@
+class Solution {
+    private boolean isSet(int x, int bit) {
+        return (x & (1 << bit)) != 0;
+    }
+    private int set(int x, int bit) {
+        return x | (1 << bit);
+    }
+    private int unSet(int x, int bit) {
+        return x & ~(1 << bit);
+    }
+    public int minimizeXor(int num1, int num2) {
+        int ans = num1;
+
+        int t1 = Integer.bitCount(num1);
+        int t2 = Integer.bitCount(num2);
+
+        int curr = 0;
+        while (t1 < t2){
+            if (!isSet(ans,curr)){
+                ans = set(ans,curr);
+                t1++;
+            }
+            curr++;
+        }
+
+        while (t1 > t2){
+            if (isSet(ans,curr)){
+                ans = unSet(ans,curr);
+                t1--;
+            }
+            curr++;
+        }
+        return ans;
+    }
+}
