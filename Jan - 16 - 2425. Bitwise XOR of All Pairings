@@ -1,0 +1,27 @@
+class Solution {
+    public int xorAllNums(int[] nums1, int[] nums2) {
+        int m = nums1.length,n = nums2.length;
+        if (m % 2 == 0 && n % 2 == 0){
+            return 0;
+        }
+
+        int x = Xor(nums1),y = Xor(nums2);
+        if (m % 2 == 1 && n % 2 == 1){
+            return x ^ y;
+        }
+
+        else if (m % 2 == 1){
+            return y;
+        }
+
+        return x;
+    }
+
+    public int Xor(int[] nums){
+        int xor = 0;
+        for (int i : nums){
+            xor ^= i;
+        }
+        return xor;
+    }
+}
