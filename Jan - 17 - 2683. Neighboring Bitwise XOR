@@ -1,0 +1,11 @@
+class Solution {
+    public boolean doesValidArrayExist(int[] derived) {
+        int first = 0,last = 0;
+        for (int i : derived){
+            if (i == 1){
+                last = ~last;
+            }
+        }
+        return first == last;
+    }
+}
