@@ -1,0 +1,39 @@
+class Solution {
+    public int countServers(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        boolean[][] vis = new boolean[m][n];
+        int ans = 0;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!vis[i][j] && grid[i][j] == 1) {
+                    int[] count = {0};
+                    dfs(i, j, vis, grid, count);
+                    ans += (count[0] > 1) ? count[0] : 0;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public void dfs(int i, int j, boolean[][] vis, int[][] grid, int[] count) {
+        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || vis[i][j] || grid[i][j] == 0) {
+            return;
+        }
+
+        vis[i][j] = true;
+        count[0]++;
+
+        for (int k = 0; k < grid.length; k++) {
+            if (k != i) {
+                dfs(k, j, vis, grid, count);
+            }
+        }
+        for (int l = 0; l < grid[0].length; l++) {
+            if (l != j) {
+                dfs(i, l, vis, grid, count);
+            }
+        }
+    }
+}
