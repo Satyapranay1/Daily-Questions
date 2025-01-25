@@ -1,0 +1,33 @@
+class Solution {
+    public int[] lexicographicallySmallestArray(int[] nums, int limit) {
+        int[] sort = Arrays.copyOf(nums,nums.length);
+        Arrays.sort(sort);
+
+        int curr = 0;
+        HashMap<Integer,Integer> map = new HashMap<>();
+        map.put(sort[0],curr);
+        HashMap<Integer,LinkedList<Integer>> list = new HashMap<>();
+        list.put(curr,new LinkedList<Integer>(Arrays.asList(sort[0])));
+
+        for (int i = 1; i < nums.length; i++){
+            if (sort[i] - sort[i - 1] > limit){
+                curr++;
+            }
+
+            map.put(sort[i],curr);
+
+            if (!list.containsKey(curr)){
+                list.put(curr,new LinkedList<>());
+            }
+
+            list.get(curr).add(sort[i]);
+        }
+
+        int[] ans = new int[nums.length];
+        for (int i = 0; i < nums.length; i++){
+            int group = map.get(nums[i]);
+            ans[i] = list.get(group).pop();
+        }
+        return ans;
+    }
+}
