@@ -1,0 +1,35 @@
+class Solution {
+    public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
+        List<Boolean> ans = new ArrayList<>();
+        Map<Integer,Set<Integer>> pre = new HashMap<>();
+        Map<Integer,List<Integer>> adj = new HashMap<>();
+        
+        for (int i = 0; i < numCourses; i++){
+            adj.put(i, new ArrayList<>());
+            pre.put(i, new HashSet<>());
+        }
+
+        for (int[] edge : prerequisites){
+            adj.get(edge[1]).add(edge[0]);
+        }
+
+        for (int i = 0; i < numCourses; i++){
+            dfs(pre,i,adj);
+        }
+
+        for (int[] inn : queries){
+            ans.add(pre.get(inn[1]).contains(inn[0]));
+        }
+        return ans;
+    }
+
+    public Set<Integer> dfs(Map<Integer, Set<Integer>> pre, int curr, Map<Integer, List<Integer>> adj) {
+        if (pre.get(curr).isEmpty()) {
+            for (int neighbor : adj.get(curr)) {
+                pre.get(curr).addAll(dfs(pre, neighbor, adj));
+            }
+            pre.get(curr).add(curr);
+        }
+        return pre.get(curr);
+    }
+}
