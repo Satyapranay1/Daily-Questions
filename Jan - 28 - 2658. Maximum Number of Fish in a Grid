@@ -1,0 +1,36 @@
+class Solution {
+    public int findMaxFish(int[][] grid) {
+        boolean[][] vis = new boolean[grid.length][grid[0].length];
+        int ans = 0;
+        for (int i = 0; i < grid.length; i++){
+            for (int j = 0; j < grid[0].length; j++){
+                if (grid[i][j] != 0 && !vis[i][j]){
+                    int curr = bfs(grid,i,j,vis);
+                    ans = Math.max(ans,curr);
+                }
+            }
+        }
+        return ans;
+    }
+
+    public int bfs(int[][] grid,int i, int j,boolean[][] vis){
+        Queue<int[]> q = new LinkedList<>();
+        int ans = 0;
+        vis[i][j] = true;
+        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+        q.offer(new int[]{i,j});
+        while (!q.isEmpty()){
+            int[] curr = q.poll();
+            int x = curr[0],y = curr[1];
+            ans += grid[x][y];
+            for (int[] dir : dirs){
+                int nx = x + dir[0],ny = y + dir[1];
+                if (nx >= 0 && ny >= 0 && nx < grid.length && ny < grid[0].length && !vis[nx][ny] && grid[nx][ny] != 0){
+                    q.offer(new int[]{nx,ny});
+                    vis[nx][ny] = true;
+                }
+            }
+        }
+        return ans;
+    }
+}
