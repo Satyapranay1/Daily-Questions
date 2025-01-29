@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n = edges.size();
+        vector<int>ds(n + 1,0);
+        for (int i = 0; i <= n; i++){
+            ds[i] = i;
+        }
+
+        for (vector<int> vec : edges){
+            int parent = vec[0],child = vec[1];
+            int p1 = findParent(parent,ds),p2 = findParent(child,ds);
+            if (p1 == p2){
+                return vec;
+            }
+            else{
+                ds[p2] = p1;
+            }
+        }
+        return {};
+    }
+
+    int findParent(int curr,vector<int>& ds){
+        if (ds[curr] == curr){
+            return curr;
+        }
+        return findParent(ds[curr],ds);
+    }
+};
