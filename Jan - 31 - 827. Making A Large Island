@@ -1,0 +1,69 @@
+class Solution {
+    public int Area(int[][] grid,int i,int j,int id){
+        Queue<int[]> q = new LinkedList<>();
+        int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
+        q.offer(new int[]{i,j});
+        grid[i][j] = id;
+        int area = 0;
+        while (!q.isEmpty()){
+            int[] curr = q.poll();
+            int x = curr[0],y = curr[1];
+            area++;
+            for (int[] dir : dirs){
+                int nx = x + dir[0],ny = y + dir[1];
+                if (nx >= 0 && ny >= 0 && nx < grid.length && ny < grid[0].length && grid[nx][ny] == 1){
+                    q.offer(new int[]{nx,ny});
+                    grid[nx][ny] = id;
+                }
+            }
+        }
+        return area;
+    }
+    public int largestIsland(int[][] grid) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        int id = 2;
+        int m = grid.length,n = grid[0].length;
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (grid[i][j] == 1){
+                    int area = Area(grid,i,j,id);
+                    map.put(id,area);
+                    id++;
+                }
+            }
+        }
+
+        int max = map.values().stream().max(Integer::compare).orElse(0);
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (grid[i][j] == 0){
+                    HashSet<Integer> seen = new HashSet<>();
+                    int area = 1;
+
+                    if (i > 0 && grid[i - 1][j] > 1){
+                        seen.add(grid[i - 1][j]);
+                    }
+
+                    if (j > 0 && grid[i][j - 1] > 1){
+                        seen.add(grid[i][j - 1]);
+                    }
+
+                    if (i < m - 1 && grid[i + 1][j] > 1){
+                        seen.add(grid[i + 1][j]);
+                    }
+
+                    if (j < n - 1 && grid[i][j + 1] > 1){
+                        seen.add(grid[i][j + 1]);
+                    }
+
+                    for (int a : seen){
+                        area += map.get(a);
+                    }
+
+                    max = Math.max(max,area);
+                }
+            }
+        }
+        return max;
+    }
+}
