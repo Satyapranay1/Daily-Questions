@@ -1,0 +1,21 @@
+class Solution {
+    public int tupleSameProduct(int[] nums) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++){
+            for (int j = i + 1; j < nums.length; j++){
+                int val = nums[i] * nums[j];
+                map.put(val,map.getOrDefault(val,0) + 1);
+            }
+        }
+
+        int ans = 0;
+
+        for (int p : map.keySet()){
+            int pf = map.get(p);
+            int pairs = ((pf - 1) * pf) / 2;
+
+            ans += (8 * pairs);
+        }
+        return ans;
+    }
+}
