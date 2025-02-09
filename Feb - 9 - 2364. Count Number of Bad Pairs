@@ -1,0 +1,18 @@
+class Solution {
+    public long countBadPairs(int[] nums) {
+        int n = nums.length;
+        long bad = 0;
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++){
+            int diff = i - nums[i];
+            int good = 0;
+            if (map.containsKey(diff)){
+                good = map.get(diff);
+            }
+
+            bad += i - good;
+            map.put(diff,good + 1);
+        }
+        return bad;
+    }
+}
