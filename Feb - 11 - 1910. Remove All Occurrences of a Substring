@@ -1,0 +1,31 @@
+class Solution {
+    public String removeOccurrences(String s, String part) {
+        Stack<Character> s1 = new Stack<>();
+        for (int i = 0; i < s.length(); i++){
+            s1.push(s.charAt(i));
+            if (s1.size() >= part.length() && Check(s1,part,part.length())){
+                for (int j = 0; j < part.length(); j++){
+                    s1.pop();
+                }
+            }
+        }
+
+        StringBuilder ans = new StringBuilder();
+        while (!s1.isEmpty()){
+            ans.append(s1.pop());
+        }
+        return ans.reverse().toString();
+    }
+
+    public boolean Check(Stack<Character> stk,String part,int partLength) {
+        Stack<Character> temp = new Stack<>();
+        temp.addAll(stk);
+        for (int i = partLength - 1; i >= 0; i--) {
+            if (temp.isEmpty() || temp.peek() != part.charAt(i)) {
+                return false;
+            }
+            temp.pop();
+        }
+        return true;
+    }
+}
