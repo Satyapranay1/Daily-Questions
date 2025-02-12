@@ -1,0 +1,28 @@
+class Solution {
+    public int maximumSum(int[] nums) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        int max = -1;
+        for (int el : nums){
+            int dig = digit(el);
+
+            if (map.containsKey(dig)){
+                max = Math.max(max,el + map.get(dig));
+                map.put(dig,Math.max(el,map.get(dig)));
+            }
+            else{
+                map.put(dig,el);
+            }
+        }
+        // System.out.println(map);
+        return max;
+    }
+
+    public int digit(int num){
+        int dig = 0;
+        while (num > 0){
+            dig += num % 10;
+            num /= 10;
+        }
+        return dig;
+    }
+}
