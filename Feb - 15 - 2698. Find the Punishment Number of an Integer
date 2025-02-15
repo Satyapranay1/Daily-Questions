@@ -1,0 +1,25 @@
+class Solution {
+    public int punishmentNumber(int n) {
+        int ans = 0;
+        for (int i = 1; i <= n; i++){
+            String sqr = String.valueOf(i * i);
+            if (partition(0,0,i,sqr)){
+                ans += (i * i);
+            }
+        }
+        return ans;
+    }
+
+    public boolean partition(int i,int curr,int target,String st){
+        if (i == st.length() && curr == target){
+            return true;
+        }
+
+        for (int j = i; j < st.length(); j++){
+            if (partition(j + 1, curr + Integer.parseInt(st.substring(i, j + 1)),target, st)){
+                return true;
+            }
+        }
+        return false;
+    }
+}
