@@ -1,0 +1,27 @@
+class Solution {
+    List<String> ans = new ArrayList<>();
+    public String getHappyString(int n, int k) {
+        int total = 3 * (1 << (n - 1));
+        if (k > total){
+            return "";
+        }
+        backtrack(n,k,new StringBuilder(),' ');
+        // System.out.println(ans);
+        return ans.get(k - 1);
+    }
+
+    public void backtrack(int n,int k,StringBuilder curr,char prev){
+        if (curr.length() == n){
+            ans.add(curr.toString());
+            return;
+        }
+
+        for (char c = 'a'; c <= 'c'; c++){
+            if (c != prev || c == ' '){
+                curr.append(c);
+                backtrack(n,k,curr,c);
+                curr.deleteCharAt(curr.length() - 1);
+            }
+        }
+    }
+}
