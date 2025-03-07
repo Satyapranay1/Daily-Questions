@@ -1,0 +1,44 @@
+class Solution {
+    public int[] closestPrimes(int left, int right) {
+        boolean[] prime = sieve(right);
+        List<Integer> p1 = new ArrayList<>();
+        for (int i = left; i <= right; i++){
+            if (prime[i] == true){
+                p1.add(i);
+            }
+        }
+
+        // System.out.println(p1);
+        if (p1.size() < 2){
+            return new int[]{-1,-1};
+        }
+
+        int[] ans = {-1,-1};
+        int min = Integer.MAX_VALUE;
+        for (int i = 1; i < p1.size(); i++){
+            int diff = p1.get(i) - p1.get(i - 1);
+            if (diff < min){
+                min = diff;
+                ans[0] = p1.get(i - 1);
+                ans[1] = p1.get(i);
+            }
+        }
+        return ans;
+    }
+
+    public boolean[] sieve(int right){
+        boolean[] prime = new boolean[right + 1];
+        Arrays.fill(prime,true);
+        prime[0] = false;
+        prime[1] = false;
+
+        for (int x = 2; x * x <= right; x++){
+            if (prime[x] == true){
+                for (int m = x * x; m <= right; m += x){
+                    prime[m] = false;
+                }
+            }
+        }
+        return prime;
+    }
+}
