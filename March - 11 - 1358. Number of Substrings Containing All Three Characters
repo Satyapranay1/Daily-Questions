@@ -1,0 +1,21 @@
+class Solution {
+    public int numberOfSubstrings(String s) {
+        int left = 0,right = 0,cnt = 0,n = s.length();
+        int[] freq = new int[3];
+        while (right < s.length()){
+            char curr = s.charAt(right);
+            freq[curr - 'a']++;
+            while (check(freq)){
+                cnt += n - right;
+                freq[s.charAt(left) - 'a']--;
+                left++;
+            }
+            right++;
+        }
+        return cnt;
+    }
+
+    public boolean check(int[] freq){
+        return freq[0] > 0 && freq[1] > 0 && freq[2] > 0; 
+    }
+}
