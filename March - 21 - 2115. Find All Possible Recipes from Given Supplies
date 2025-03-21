@@ -1,0 +1,39 @@
+class Solution {
+    public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
+        Set<String> avai = new HashSet<>();
+        for (String su : supplies){
+            avai.add(su);
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < recipes.length; i++){
+            q.offer(i);
+        }
+
+        List<String> ans = new ArrayList<>();
+        int last = -1;
+        while (avai.size() > last){
+            last = avai.size();
+            int qs = q.size();
+            while (qs-- > 0){
+                int curr = q.poll();
+                boolean can = true;
+                for (String ing : ingredients.get(curr)){
+                    if (!avai.contains(ing)){
+                        can = false;
+                        break;
+                    }
+                }
+
+                if (!can){
+                    q.offer(curr);
+                }
+                else{
+                    avai.add(recipes[curr]);
+                    ans.add(recipes[curr]);
+                }
+            }
+        }
+        return ans;
+    }
+}
