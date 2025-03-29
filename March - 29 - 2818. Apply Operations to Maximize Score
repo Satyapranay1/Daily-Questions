@@ -1,0 +1,93 @@
+class Solution {
+    public int maximumScore(List<Integer> nums, int k) {
+        int mod = 1000000007;
+        int n = nums.size();
+        int[] prime1 = prime(nums);
+        // System.out.println(Arrays.toString(prime1));
+
+        int[] next = new int[n];
+        int[] prev = new int[n];
+        Arrays.fill(next,n);
+        Arrays.fill(prev,-1);
+
+        Stack<Integer> st = new Stack<>();
+        for (int i = 0; i < n; i++){
+            while (!st.isEmpty() && prime1[st.peek()] < prime1[i]){
+                next[st.pop()] = i;
+            }
+
+            if (!st.isEmpty()){
+                prev[i] = st.peek();
+            }
+
+            st.push(i);
+        }
+
+        long[] sub = new long[n];
+        for (int i = 0; i < n; i++){
+            sub[i] = ((long) next[i] - i) * (i - prev[i]);
+        }
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> {
+            if (a[0] == b[0]){
+                return Integer.compare(a[1],b[1]);
+            }
+            return Integer.compare(b[0],a[0]);
+        });
+
+        for (int i = 0; i < n; i++){
+            pq.offer(new int[]{nums.get(i),i});
+        }
+
+        long score = 1;
+        while (k > 0){
+            int[] top = pq.poll();
+            int num = top[0];
+            int idx = top[1];
+
+            long op = Math.min((long)k,sub[idx]);
+            score = ((score) * power(num,op)) % mod;
+            k -= op;
+        }
+        return (int)score;
+    }
+
+    public long power(long base,long exp){
+        long res = 1;
+        int mod = 1000000007;
+        while (exp > 0){
+            if (exp % 2 == 1){
+                res = (res * base) % mod;
+            }
+
+            base = (base * base) % mod;
+            exp /= 2;
+        }
+        return res;
+    }
+
+    public int[] prime(List<Integer> nums) {
+        int[] prime1 = new int[nums.size()];
+
+        for (int i = 0; i < nums.size(); i++) {
+            int x = nums.get(i);
+            int score = 0;
+
+            for (int j = 2; j <= Math.sqrt(x); j++) {
+                if (x % j == 0) {
+                    score++;
+                    while (x % j == 0) {
+                        x /= j;
+                    }
+                }
+            }
+            if (x > 1) {
+                score++;
+            }
+
+            prime1[i] = score;
+        }
+
+        return prime1;
+    }
+}
