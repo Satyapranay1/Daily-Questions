@@ -1,0 +1,23 @@
+class Solution {
+    public long putMarbles(int[] weights, int k) {
+        if (k == 1){
+            return 0;
+        }
+        List<Integer> split = new ArrayList<>();
+        int n = weights.length;
+
+        for (int i = 0; i < n - 1; i++){
+            split.add((weights[i] + weights[i + 1]));
+        }
+
+        Collections.sort(split);
+
+        long front = 0,back = 0;
+        for (int i = 0; i < k - 1; i++){
+            front += split.get(i);
+            back += split.get(split.size() - i - 1);
+        }
+
+        return -front + back;
+    }
+}
