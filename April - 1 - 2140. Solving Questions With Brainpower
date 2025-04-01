@@ -1,0 +1,19 @@
+class Solution {
+    public long mostPoints(int[][] questions) {
+        long[] memo = new long[questions.length];
+        Arrays.fill(memo,-1);
+        return dp(0,questions,memo);
+    }
+
+    public long dp(int i,int[][] questions,long[] memo){
+        if (i >= questions.length){
+            return 0;
+        }
+
+        if (memo[i] != -1){
+            return memo[i];
+        }
+
+        return memo[i] = Math.max(questions[i][0] + dp(i + questions[i][1] + 1,questions,memo),dp(i + 1,questions,memo));
+    }
+}
