@@ -1,0 +1,37 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int total = 0;
+        for (int i = 0; i < nums.length; i++){
+            total += nums[i];
+        }
+
+        if (total % 2 != 0){
+            return false;
+        }
+
+        Boolean[][] memo = new Boolean[total / 2 + 1][nums.length + 1];
+
+        return Part(nums,0,total / 2,memo);
+    }
+
+    public boolean Part(int[] nums,int index,int sum,Boolean[][] memo){
+        if (sum == 0){
+            return true;
+        }
+
+        if (index == nums.length || sum < 0){
+            return false;
+        }
+
+        if (memo[sum][index] != null){
+            return memo[sum][index];
+        }
+        
+        boolean Take = false;
+        if (nums[index] <= sum){
+            Take |= Part(nums,index + 1,sum - nums[index],memo);
+        }
+        boolean Not = Part(nums,index + 1,sum,memo);
+        return memo[sum][index] = Take || Not;
+    }
+}
