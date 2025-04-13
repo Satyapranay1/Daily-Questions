@@ -1,0 +1,19 @@
+class Solution {
+    static final long mod = 1_000_000_007;
+    public int countGoodNumbers(long n) {
+        long even = expo(5,(n + 1) / 2);
+        long odd = expo(4,n / 2);
+        return (int)((even * odd) % mod);
+    }
+
+    public long expo(int x,long y){
+        long res = 1;
+        long mul = x;
+        while (y > 0){
+            res = (res * (y % 2 == 1 ? mul : 1)) % mod;
+            mul = (mul * mul) % mod;
+            y /= 2;
+        }
+        return res;
+    }
+}
