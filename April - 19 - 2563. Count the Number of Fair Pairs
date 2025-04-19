@@ -1,0 +1,22 @@
+class Solution {
+    public long countFairPairs(int[] nums, int lower, int upper) {
+        Arrays.sort(nums);
+        return Prefix(nums,upper + 1) - Prefix(nums,lower);
+    }
+
+    public long Prefix(int[] nums,int bound){
+        int left = 0,right = nums.length - 1;
+        long cnt = 0;
+        while (left < right){
+            int curr = nums[left] + nums[right];
+            if (curr < bound){
+                cnt += (right - left);
+                left++;
+            }
+            else{
+                right--;
+            }
+        }
+        return cnt;
+    }
+}
