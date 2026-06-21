@@ -14,7 +14,6 @@ class Solution {
             count += canBuy;
             coins -= canBuy * cost;
         }
-
         return count;
     }
 }
