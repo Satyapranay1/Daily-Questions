@@ -1,0 +1,39 @@
+class Solution {
+    public int countCompleteComponents(int n, int[][] edges) {
+        List<Integer>[] adj = new ArrayList[n];
+        for (int i = 0; i < n; i++){
+            adj[i] = new ArrayList<>();
+        }
+
+        for (int[] edge : edges){
+            adj[edge[0]].add(edge[1]);
+            adj[edge[1]].add(edge[0]);
+        }
+
+        Set<Integer> vis = new HashSet<>();
+        int ans = 0;
+        for (int v = 0; v < n; v++){
+            if (!vis.contains(v)){
+                int[] ve = new int[2];
+                dfs(v,ve,adj,vis);
+                if (ve[0] * (ve[0] - 1) == ve[1]){
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public void dfs(int v,int[] ve,List<Integer>[] adj,Set<Integer> vis){
+        vis.add(v);
+        ve[0]++;
+        ve[1] += adj[v].size();
+
+        for (int next : adj[v]){
+            if (!vis.contains(next)){
+                
+                dfs(next,ve,adj,vis);
+            }
+        }
+    }
+}
