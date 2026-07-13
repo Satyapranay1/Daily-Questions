@@ -1,0 +1,25 @@
+class Solution {
+    public List<Integer> sequentialDigits(int low, int high) {
+        Queue<Integer> queue = new LinkedList<>();
+        List<Integer> ans = new ArrayList<>();
+
+        for (int i = 1; i <= 9; i++) {
+            queue.offer(i);
+        }
+
+        while (!queue.isEmpty()) {
+            int num = queue.poll();
+
+            if (num >= low && num <= high) {
+                ans.add(num);
+            }
+
+            if (num % 10 < 9) {
+                int rem = num % 10;
+                queue.offer(num * 10 + rem + 1);
+            }
+        }
+
+        return ans;
+    }
+}
